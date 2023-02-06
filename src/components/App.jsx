@@ -4,11 +4,12 @@ import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact, deleteContact, getContacts } from 'redux/contactsSlice';
+// import { addContact, deleteContact, getContacts } from 'redux/contactsSlice';
+import { fetchContacts, addContact, deleteContact } from 'redux/thunks/contactsThunks';
 import { addFilter, getFilter } from 'redux/filterSlice';
 
 export function App() {
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(fetchContacts);
   const filter = useSelector(getFilter);
   const dispatch = useDispatch();
 
