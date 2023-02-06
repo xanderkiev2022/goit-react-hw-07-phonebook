@@ -31,34 +31,25 @@ const contactsSlice = createSlice({
     },
     [fetchContacts.rejected]: handleRejected,
     [addContact.pending]: handlePending,
-    [addContact.fulfilled](state, action) {
+    [addContact.fulfilled](state, { payload }) {
       state.isLoading = false;
       state.error = null;
-      state.items.push(action.payload);
+      const dublicate = state.contacts.find(contact => contact.name.toLowerCase() === payload.name.toLowerCase());
+      if (dublicate) return alert(`${payload.name} is already in contacts`);
+      state.contacts.push(payload);
     },
     [addContact.rejected]: handleRejected,
     [deleteContact.pending]: handlePending,
-    [deleteContact.fulfilled](state, action) {
+    [deleteContact.fulfilled](state, { payload }) {
       state.isLoading = false;
       state.error = null;
-      const index = state.items.findIndex(task => task.id === action.payload.id);
-      state.items.splice(index, 1);
+      // const index = state.items.findIndex(task => task.id === action.payload.id);
+      // state.items.splice(index, 1);
+      state.contacts = state.contacts.filter(({ id }) => id !== payload);
     },
     [deleteContact.rejected]: handleRejected,
   },
 });
 
-//   extraReducers: {
-//     addContact(state, { payload }) {
-//       const dublicate = state.contacts.find(contact => contact.name.toLowerCase() === payload.name.toLowerCase());
-//       if (dublicate) return alert(`${payload.name} is already in contacts`);
-//       state.contacts.push(payload);
-//     },
-//     deleteContact(state, { payload }) {
-//       state.contacts = state.contacts.filter(({ id }) => id !== payload);
-//     },
-//   },
-// });
-
 export const contactsReducer = contactsSlice.reducer;
-export const getContacts = state => state.contacts.contacts.contacts;
+export const getContacts = state => state.contacts.contacts;
