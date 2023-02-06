@@ -30,8 +30,10 @@ const contactsSlice = createSlice({
       state.isLoading = false;
       state.error = null;
       const dublicate = state.items.find(contact => contact.name.toLowerCase() === payload.name.toLowerCase());
-      if (dublicate) return alert(`${payload.name} is already in contacts`);
-      state.items.push(payload);
+      if (dublicate) {
+        alert(`${payload.name} is already in contacts`);
+        return;
+      } else state.items.push(payload);
     },
     [addContact.rejected]: handleRejected,
     [deleteContact.pending]: handlePending,
