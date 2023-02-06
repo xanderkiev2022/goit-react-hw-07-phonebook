@@ -1,13 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Container,
-  InputContainer,
-  Input,
-  LabelText,
-  Button,
-} from './ContactForm.styled';
-import { nanoid } from 'nanoid';
+import { Container, InputContainer, Input, LabelText, Button } from './ContactForm.styled';
 
 export function ContactForm({ onSubmitData }) {
   const [name, setName] = useState('');
@@ -24,7 +17,6 @@ export function ContactForm({ onSubmitData }) {
     const obj = {
       name,
       number,
-      id: nanoid(),
     };
     onSubmitData(obj);
     setName('');

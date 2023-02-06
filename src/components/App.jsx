@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, TitleH1, TitleH2 } from './App.styled';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContacts } from 'redux/contactsSlice';
-import { fetchContacts, addContact, deleteContact } from 'redux/thunks/contactsThunks';
+import { fetchContacts, addContact, deleteContact } from 'redux/operations';
 import { addFilter, getFilter } from 'redux/filterSlice';
 
 export function App() {
   const contacts = useSelector(getContacts);
-  console.log('contacts :>> ', contacts);
   const filter = useSelector(getFilter);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const handleSubmit = newContact => dispatch(addContact(newContact));
   const changeFilter = e => dispatch(addFilter(e.currentTarget.value));
@@ -23,7 +26,6 @@ export function App() {
     <Container>
       <TitleH1>Phonebook</TitleH1>
       <ContactForm onSubmitData={handleSubmit} />
-
       <TitleH2>Contacts</TitleH2>
       <Filter value={filter} changeFilter={changeFilter} />
       {contacts.length ? (
