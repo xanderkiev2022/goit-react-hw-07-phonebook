@@ -17,7 +17,14 @@ export function App() {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  const handleSubmit = newContact => dispatch(addContact(newContact));
+  const handleSubmit = newContact => {
+    const dublicate = contacts.find(({ name }) => name.toLowerCase().includes(newContact.name.toLowerCase()));
+    if (dublicate) {
+      alert(`${newContact} is already in contacts`);
+      return;
+    }
+    dispatch(addContact(newContact));
+  };
   const changeFilter = e => dispatch(addFilter(e.currentTarget.value));
   const delContact = id => dispatch(deleteContact(id));
   const randerContacts = () => contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
