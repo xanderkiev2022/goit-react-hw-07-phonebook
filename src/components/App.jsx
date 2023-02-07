@@ -4,13 +4,16 @@ import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'redux/contactsSlice';
+import { getContacts, getError, getLoading } from 'redux/contactsSlice';
 import { fetchContacts, addContact, deleteContact } from 'redux/operations';
 import { addFilter, getFilter } from 'redux/filterSlice';
+import { Loader } from './Loader/Loader';
 
 export function App() {
   const contacts = useSelector(getContacts);
   const filter = useSelector(getFilter);
+  const isLoading = useSelector(getLoading);
+  const error = useSelector(getError);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,14 +34,21 @@ export function App() {
 
   return (
     <Container>
-      <TitleH1>Phonebook</TitleH1>
-      <ContactForm onSubmitData={handleSubmit} />
-      <TitleH2>Contacts</TitleH2>
-      <Filter value={filter} changeFilter={changeFilter} />
-      {contacts.length ? (
-        <ContactList contacts={randerContacts()} deleteContact={delContact} />
+      {error ? (
+        <p>Please try again later. The problem occurred. ${error}</p>
       ) : (
-        <p>Oh, dear, you have no friends:( Get out of your chair and do something with your life ;)</p>
+        <>
+          {isLoading && <Loader />}
+          <TitleH1>Phonebook</TitleH1>
+          <ContactForm onSubmitData={handleSubmit} />
+          <TitleH2>Contacts</TitleH2>
+          <Filter value={filter} changeFilter={changeFilter} />
+          {contacts.length ? (
+            <ContactList contacts={randerContacts()} deleteContact={delContact} />
+          ) : (
+            <p>Oh, dear, you have no friends:( Get out of your chair and do something with your life ;)</p>
+          )}
+        </>
       )}
     </Container>
   );
